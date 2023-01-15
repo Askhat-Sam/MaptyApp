@@ -14,27 +14,35 @@ const inputElevation = document.querySelector('.form__input--elevation');
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position){
         const {latitude, longitude}=position.coords;
-        console.log(`https://www.google.com/maps/@${latitude},${longitude},15z`);
+        // console.log(`https://www.google.com/maps/@${latitude},${longitude},15z`);
         
     const coords=[latitude, longitude]
 
         const map = L.map('map').setView(coords, 13);
+        // console.log(map);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        L.marker([51.5, -0.09]).addTo(map)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+        map.on('click', function(mapEvent){
+            console.log(mapEvent);
+            const {lat, lng} = mapEvent.latlng
+            console.log(lat, lng);
+            L.marker([lat, lng]).addTo(map)
+            .bindPopup('Workout')
             .openPopup();
 
-
-
+        })
     }, 
     function(){
         alert('Could not get your position')
     })
 };
+
+document.addEventListener('click', function(){
+
+})
 
 
 
