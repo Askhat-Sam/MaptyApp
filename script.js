@@ -42,8 +42,8 @@ if (navigator.geolocation)
 console.log(map);
 form.addEventListener('submit', function(e){
     e.preventDefault();
-    console.log(mapEvent);
-    console.log(map);
+    //Clear input fields
+    inputDistance.value=inputDuration.value=inputElevation.value=inputCadence.value=""
 
 
     const {lat, lng} = mapEvent.latlng
