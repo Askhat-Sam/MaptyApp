@@ -21,7 +21,6 @@ if (navigator.geolocation)
             const coords=[latitude, longitude]
 
             map = L.map('map').setView(coords, 13);
-            console.log(map);
 
             L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
                 attribution: 
@@ -32,14 +31,12 @@ if (navigator.geolocation)
                 mapEvent=mapE
                 form.classList.remove('hidden');
                 inputDistance.focus();
-                console.log(map);
         })
     }, 
     function(){
         alert('Could not get your position')
     });
 
-console.log(map);
 form.addEventListener('submit', function(e){
     e.preventDefault();
     //Clear input fields
@@ -63,6 +60,12 @@ form.addEventListener('submit', function(e){
     .openPopup();
     
 });
+
+inputType.addEventListener('change', function(){
+    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+
+})
 
 
 
