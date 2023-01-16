@@ -11,50 +11,58 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position){
-        const {latitude, longitude}=position.coords;
-        // console.log(`https://www.google.com/maps/@${latitude},${longitude},15z`);
+let map, mapEvent;
+
+if (navigator.geolocation) 
+    navigator.geolocation.getCurrentPosition(
+        function(position){
+            const {latitude, longitude}=position.coords;
         
-    const coords=[latitude, longitude]
+            const coords=[latitude, longitude]
 
-        const map = L.map('map').setView(coords, 13);
-        // console.log(map);
+            map = L.map('map').setView(coords, 13);
+            console.log(map);
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+            L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+                attribution: 
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-        map.on('click', function(mapEvent){
-            form.classList.remove('hidden');
-            inputDistance.focus();
-
-
-            
-
+            map.on('click', function(mapE){
+                mapEvent=mapE
+                form.classList.remove('hidden');
+                inputDistance.focus();
+                console.log(map);
         })
     }, 
     function(){
         alert('Could not get your position')
-    })
-};
+    });
 
-form.addEventListener('submit', function(){
+console.log(map);
+form.addEventListener('submit', function(e){
+    e.preventDefault();
     console.log(mapEvent);
+    console.log(map);
+
+
     const {lat, lng} = mapEvent.latlng
-    console.log(lat, lng);
-    L.marker([lat, lng]).addTo(map)
-    .bindPopup(L.popup({
+    // console.log(lat, lng);
+    L.marker([lat, lng])
+    .addTo(map)
+    .bindPopup(
+        L.popup({
         maxWidth: 250,
         minWidth: 100,
-        autoClose: false,
+        // autoClose: false,
         closeOnClick: false,
-        className: 'running-popup',
-                
-    }))
+        className: 'running-popup',         
+    })
+    )
     .setPopupContent('Here')
     .openPopup();
-})
+    
+});
 
 
 
