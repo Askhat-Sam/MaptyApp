@@ -11,7 +11,41 @@ const inputDuration = document.querySelector('.form__input--duration');
 const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
-let map, mapEvent;
+class Workout {
+    date=new Date()
+    id = (new Date()+"").slice(-10)
+    constructor(coords, distance,duration){
+        this.coords=coords;
+        this.distance=distance;
+        this.duration=duration;
+}
+}
+
+
+class Runnings extends Workout {
+    constructor(coords,distance, duration,cadence){
+        super(coords,distance, duration);
+        this.cadence=cadence;
+        this.calcPace()
+    }
+
+    calcPace(){
+        this.pace=this.duration/this.distance
+        return this.pace
+    }
+}
+class Cycling extends Workout {
+    constructor(coords,distance, duration,elevationGain){
+        super(coords,distance, duration);
+        this.elevationGain=elevationGain;
+        this.calcSpeed()
+    }
+
+    calcSpeed(){
+        this.speed=this.distance/this.distance /60
+        return this.speed
+    }
+}
 
 class App{
     #map;
@@ -20,6 +54,8 @@ class App{
         this._getPosition();
 
         form.addEventListener('submit', this._newWorkout.bind(this));
+
+        inputType.addEventListener('change', this._toggleElevationField)
     }
 
     _getPosition(){
@@ -49,7 +85,10 @@ class App{
         form.classList.remove('hidden');
         inputDistance.focus();
     }
-    _toggleElevationField(){}
+    _toggleElevationField(){
+        inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
+        inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
+    }
     _newWorkout(e){
         e.preventDefault();
         //Clear input fields
@@ -74,12 +113,6 @@ class App{
 }
 
 const app = new App();
-
-inputType.addEventListener('change', function(){
-    inputElevation.closest('.form__row').classList.toggle('form__row--hidden');
-    inputCadence.closest('.form__row').classList.toggle('form__row--hidden');
-
-})
 
 
 
